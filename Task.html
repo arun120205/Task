@@ -6,8 +6,8 @@
         body { font-family: Arial; padding: 20px; }
         table { border-collapse: collapse; width: 100%; margin-top: 10px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        input { margin: 5px; }
-        button { margin: 5px; }
+        input { margin: 5px; padding: 5px; }
+        button { margin: 5px; padding: 5px 10px; }
     </style>
 </head>
 <body>
@@ -55,22 +55,42 @@
                             <button onclick="deleteClient(${index})">Delete</button>
                         </td>
                     </tr>
-                `;
+                `; 
             });
         }
 
         function addClient() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
 
-            if (name && email && phone) {
-                clients.push({ name, email, phone });
-                clearForm();
-                displayClients();
-            } else {
+            const nameRegex = /^[A-Za-z ]+$/;
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            const phoneRegex = /^[0-9]+$/;
+
+            if (!name || !email || !phone) {
                 alert("Please fill all fields");
+                return;
             }
+
+            if (!nameRegex.test(name)) {
+                alert("Name must contain only letters.");
+                return;
+            }
+
+            if (!emailRegex.test(email)) {
+                alert("Email must be a valid Gmail address (ending with @gmail.com).");
+                return;
+            }
+
+            if (!phoneRegex.test(phone)) {
+                alert("Phone number must contain only digits.");
+                return;
+            }
+
+            clients.push({ name, email, phone });
+            clearForm();
+            displayClients();
         }
 
         function editClient(index) {
@@ -82,12 +102,37 @@
             document.getElementById("phone").value = client.phone;
 
             document.getElementById("updateBtn").style.display = "inline";
+            document.querySelector("button[onclick='addClient()']").style.display = "none";
         }
 
         function updateClient() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+
+            const nameRegex = /^[A-Za-z ]+$/;
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            const phoneRegex = /^[0-9]+$/;
+
+            if (!name || !email || !phone) {
+                alert("Please fill all fields");
+                return;
+            }
+
+            if (!nameRegex.test(name)) {
+                alert("Name must contain only letters.");
+                return;
+            }
+
+            if (!emailRegex.test(email)) {
+                alert("Email must be a valid Gmail address (ending with @gmail.com).");
+                return;
+            }
+
+            if (!phoneRegex.test(phone)) {
+                alert("Phone number must contain only digits.");
+                return;
+            }
 
             if (selectedIndex > -1) {
                 clients[selectedIndex] = { name, email, phone };
@@ -95,6 +140,7 @@
                 clearForm();
                 displayClients();
                 document.getElementById("updateBtn").style.display = "none";
+                document.querySelector("button[onclick='addClient()']").style.display = "inline";
             }
         }
 
@@ -112,5 +158,6 @@
         }
     </script>
 
-</body>
+</body> 
 </html>
+  
